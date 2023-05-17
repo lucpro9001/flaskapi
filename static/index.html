@@ -11,7 +11,7 @@
 
 <body>
     <h1 class="txt-center txt-upper">restful api<br />heart disease prediction</h1>
-    <table>
+    <table style="width: 80%; margin: 10px auto;">
         <tr>
             <th>Endpoint</th>
             <th>Method</th>
@@ -25,21 +25,21 @@
                 [RETURN]:
                 <ul>
                     <li>200: a hmtl page</li>
-                    <li>4xx: some mistake from client</li>
+                    <li>4xx: some mistakes from client</li>
                     <li>5xx: server error</li>
                 </ul>
         </tr>
         <tr>
             <td>/payload</td>
             <td>GET</td>
-            <td>GET payload category<br>
+            <td>GET payload categories<br>
                 [PAYLOAD]: None <br>
                 [RETURN]:
                 <pre id="struct">
 
                 </pre>
                 <ul>
-                    <li>200: a json file contain payload info</li>
+                    <li>200: a json file contains payload info</li>
                     <li>4xx: some mistake from client</li>
                     <li>5xx: server error</li>
                 </ul>
@@ -48,12 +48,12 @@
         <tr>
             <td>api/predict/csv</td>
             <td>GET</td>
-            <td>Take csv file to make prediction<br>
-                [PAYLOAD]: file csv contain 13 feature column and a list of record needs to predict<br>
+            <td>Take a csv file to make prediction<br>
+                [PAYLOAD]: file csv contain 13 feature columns and a list of record need to predict<br>
                 [RETURN]: 
                     <ul>
-                        <li>200: a csv file with additional predicted column indicate result</li>
-                        <li>4xx: file may be incorrect or some mistake from client</li>
+                        <li>200: a csv file with id, predicted columns indicates result</li>
+                        <li>4xx: file may be incorrect or some mistakes from client</li>
                         <li>5xx: server error</li>
                     </ul>
             </td>
@@ -61,12 +61,12 @@
         <tr>
             <td>api/predict/csv</td>
             <td>POST</td>
-            <td>Take csv file with 'true' lable(target) to stored and make model in a future<br>
-                [PAYLOAD]: file csv contain 13 feature, 1 target column and a list of record needs to stored<br>
+            <td>Take a csv file with 'true' label(target) to save and to make model in a future<br>
+                [PAYLOAD]: file csv contain 13 features, 1 target column and a list of record need to stored<br>
                 [RETURN]:
                 <ul>
                     <li>201: CREATED</li>
-                    <li>4xx: file may be incorrect or some mistake from client</li>
+                    <li>4xx: file may be incorrect or some mistakes from client</li>
                     <li>5xx: server error</li>
                 </ul>
         </tr>

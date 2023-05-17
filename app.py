@@ -5,8 +5,34 @@ import os
 import json
 import pandas as pd
 import datetime;
-app = Flask(__name__)
+import numpy as np
 
+class ModelCombiner:
+    """
+    Combine predictions of a list of fitted classification models by taking the average of their predicted probabilities.
+
+    Parameters:
+    models (list): A list of fitted Scikit-learn classification models.
+    """
+    def __init__(self, models):
+        self.models = models
+
+    def predict(self, X):
+        """
+        Combine predictions of the fitted models by taking the average of their predicted probabilities.
+
+        Parameters:
+        X (array-like): The input data.
+
+        Returns:
+        A 1D array of predicted labels.
+        """
+        probs = np.array([model.predict_proba(X) for model in self.models])
+        combined_probs = np.mean(probs, axis=0)
+        combined_preds = np.argmax(combined_probs, axis=1)
+        return combined_preds
+
+app = Flask(__name__)
 
 @app.route('/')
 def index():
@@ -77,15 +103,21 @@ def predict_csv():
             features[columns[i]] = features[columns[i]].apply(
                 lambda x: ([i1 for i1, value in enumerate(([e[0] <= x <= e[1] for e in ranges_[i]])) if value])[0])
         # predict
-        path = os.path.join(app.root_path, 'models/KNN-Classi-zScore.pkl')
-        model = joblib.load(path)
-        y_pred = model.predict(features)
+        folder_path = os.path.join(app.root_path, 'models')
+        models = []
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+            if os.path.isfile(file_path):
+                models.append(joblib.load(file_path))  
+
+        model_combiner = ModelCombiner(models)
+        y_pred = model_combiner.predict(features)
         df['predicted'] = y_pred
         return df[['id', 'predicted']].to_csv(encoding='utf-16', index=False), 200
     except Exception as e:
         return str(e.args), 500
 
-@app.route('/api/store/csv', methods=['POST'])
+@app.route('/api/predict/csv', methods=['POST'])
 def stored_csv():
     try:
         if 'file' not in request.files:
