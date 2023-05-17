@@ -1,0 +1,17 @@
+body {
+    font-size: 18px;
+}
+.txt-center {
+    text-align: center;   
+} 
+.txt-upper {
+    text-transform: uppercase;
+}
+table, td, th {
+    border: 1px solid;
+}
+  
+table {
+    width: 100%;
+    border-collapse: collapse;
+}

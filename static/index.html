@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css.css">
+    <title>Heart disease prediction</title>
+</head>
+
+<body>
+    <h1 class="txt-center txt-upper">restful api<br />heart disease prediction</h1>
+    <table>
+        <tr>
+            <th>Endpoint</th>
+            <th>Method</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>/</td>
+            <td>GET</td>
+            <td>Return infomation page<br>
+                [PAYLOAD]: None <br>
+                [RETURN]:
+                <ul>
+                    <li>200: a hmtl page</li>
+                    <li>4xx: some mistake from client</li>
+                    <li>5xx: server error</li>
+                </ul>
+        </tr>
+        <tr>
+            <td>/payload</td>
+            <td>GET</td>
+            <td>GET payload category<br>
+                [PAYLOAD]: None <br>
+                [RETURN]:
+                <pre id="struct">
+
+                </pre>
+                <ul>
+                    <li>200: a json file contain payload info</li>
+                    <li>4xx: some mistake from client</li>
+                    <li>5xx: server error</li>
+                </ul>
+        </tr>
+        
+        <tr>
+            <td>api/predict/csv</td>
+            <td>GET</td>
+            <td>Take csv file to make prediction<br>
+                [PAYLOAD]: file csv contain 13 feature column and a list of record needs to predict<br>
+                [RETURN]: 
+                    <ul>
+                        <li>200: a csv file with additional predicted column indicate result</li>
+                        <li>4xx: file may be incorrect or some mistake from client</li>
+                        <li>5xx: server error</li>
+                    </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>api/predict/csv</td>
+            <td>POST</td>
+            <td>Take csv file with 'true' lable(target) to stored and make model in a future<br>
+                [PAYLOAD]: file csv contain 13 feature, 1 target column and a list of record needs to stored<br>
+                [RETURN]:
+                <ul>
+                    <li>201: CREATED</li>
+                    <li>4xx: file may be incorrect or some mistake from client</li>
+                    <li>5xx: server error</li>
+                </ul>
+        </tr>
+        </tr>
+    </table>
+    <script>
+        var structure = {
+            'Các biến chứng': ['Atypical angina', 'Non-anginal pain', 'Asymptomatic'],
+            'Điện tâm đồ': [0,1,2],
+            'Thể dục': ['Us', 'U', 'D', 'Upsloping', 'Ds', 'Flat', 'Downsloping', 'F'],
+            'Mạch': [0,1,2,3],
+            'Thalassemia': [3,6,7]
+        }
+        document.getElementById("struct").innerHTML = JSON.stringify(structure, null, 4);
+        document.getElementById("json").innerHTML = JSON.stringify(row, null, 4);
+    </script>
+</body>
+
+</html>
