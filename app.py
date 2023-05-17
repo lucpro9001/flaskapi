@@ -129,7 +129,7 @@ def stored_csv():
         if is_valid != 'ok':
             return is_valid, 400
         date = (datetime.datetime.now()).strftime("%d-%m-%Y-%H-%M-%M")
-        path = os.path.join(app.root_path, 'stored_csv', f'file_{date}.csv')
+        path = os.path.join(app.root_path, f'file_{date}.csv')
         df.to_csv(path, encoding='utf-16', index=False)
         return 'Created', 301
     except Exception as e:
