@@ -7,7 +7,7 @@ import pandas as pd
 import datetime;
 import numpy as np
 
-class ModelCombiner:
+class VotingEnsemble:
     """
     Combine predictions of a list of fitted classification models by taking the average of their predicted probabilities.
 
@@ -91,11 +91,14 @@ def predict_csv():
         is_valid = validate_csv(df, False)
         if is_valid != 'ok':
             return is_valid, 400
-        df['Giới tính'] = df['Giới tính'].map({'Female': 1, 'Male': 0}).astype(int)
-        df['Đường huyết'] = df['Đường huyết'].astype(int)
-        df['Đau ngực'] = df['Đau ngực'].map({'Yes': 1, 'No': 0}).astype(int)
         features = df.drop(columns=['id'], axis=1)
+        prefix = pd.read_csv('./prefix.csv', encoding='utf-16', index_col=False)
+        features = pd.concat([features, prefix], ignore_index=True)
+        features['Giới tính'] = features['Giới tính'].map({'Female': 1, 'Male': 0}).astype(int)
+        features['Đường huyết'] = features['Đường huyết'].astype(int)
+        features['Đau ngực'] = features['Đau ngực'].map({'Yes': 1, 'No': 0}).astype(int)
         features = pd.get_dummies(features, drop_first=True)
+        features = features.iloc[:-8]
         columns = ['Tuổi', 'Huyết áp', 'Cholesterol', 'Nhịp tim', 'Trầm cảm']
         data_path = os.path.join(app.root_path, 'settings/ranges_data.pkl')
         ranges_ = joblib.load(data_path)
@@ -110,12 +113,13 @@ def predict_csv():
             if os.path.isfile(file_path):
                 models.append(joblib.load(file_path))  
 
-        model_combiner = ModelCombiner(models)
-        y_pred = model_combiner.predict(features)
+        votingEnsemble = VotingEnsemble(models)
+        y_pred = votingEnsemble.predict(features)
         df['predicted'] = y_pred
         return df[['id', 'predicted']].to_csv(encoding='utf-16', index=False), 200
     except Exception as e:
-        return str(e.args), 500
+        print(e)
+        return "internal server error", 500
 
 @app.route('/api/predict/csv', methods=['POST'])
 def stored_csv():
@@ -132,8 +136,8 @@ def stored_csv():
         path = os.path.join(app.root_path, f'file_{date}.csv')
         df.to_csv(path, encoding='utf-16', index=False)
         return 'Created', 301
-    except Exception as e:
-        return str(e.args), 500
+    except:
+        return "internal server error", 500
 
 def validate_csv(df, have_target):
     names = ['id','Tuổi','Giới tính','Các biến chứng','Huyết áp','Cholesterol','Đường huyết','Điện tâm đồ','Nhịp tim','Đau ngực','Trầm cảm','Thể dục','Mạch','Thalassemia']
