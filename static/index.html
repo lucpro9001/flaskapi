@@ -20,9 +20,9 @@
         <tr>
             <td>/</td>
             <td>GET</td>
-            <td>Return infomation page<br>
+            <td>RESPONSE infomation page<br>
                 [PAYLOAD]: None <br>
-                [RETURN]:
+                [RESPONSE]:
                 <ul>
                     <li>200: a hmtl page</li>
                     <li>4xx: some mistakes from client</li>
@@ -34,7 +34,7 @@
             <td>GET</td>
             <td>GET payload categories<br>
                 [PAYLOAD]: None <br>
-                [RETURN]:
+                [RESPONSE]:
                 <pre id="struct">
 
                 </pre>
@@ -50,7 +50,7 @@
             <td>GET</td>
             <td>Take a csv file to make prediction<br>
                 [PAYLOAD]: file csv contain 13 feature columns and a list of record need to predict<br>
-                [RETURN]: 
+                [RESPONSE]: 
                     <ul>
                         <li>200: a csv file with id, predicted columns indicates result</li>
                         <li>4xx: file may be incorrect or some mistakes from client</li>
@@ -63,7 +63,7 @@
             <td>POST</td>
             <td>Take a csv file with 'true' label(target) to save and to make model in a future<br>
                 [PAYLOAD]: file csv contain 13 features, 1 target column and a list of record need to stored<br>
-                [RETURN]:
+                [RESPONSE]:
                 <ul>
                     <li>201: CREATED</li>
                     <li>4xx: file may be incorrect or some mistakes from client</li>
